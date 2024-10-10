@@ -16,8 +16,9 @@ for linha in pagina.iter_rows(min_row=2):
     nome = linha[0].value
     telefone = linha[1].value
     celula = linha[2].value
-    mensagem = f'Olá, {nome}! Tudo bem?\nVi que você está escalado pra servir nesse sábado, contamos com você.\nVocê pode confirmar pra mim se vai conseguir servir?\nÉ só confirmar nesse link aqui: https://forms.gle/y9N6Nf7Z6GmucRuj7'
-
+    email = linha[3].value
+    escala = linha[4].value
+    
     # print(nome)
     # print(telefone)
     # print(celula)
