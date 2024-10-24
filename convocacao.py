@@ -31,13 +31,11 @@ for linha in pagina.iter_rows(min_row=2):
         try:
             link_mensagem = f'https://web.whatsapp.com/send?phone={telefone}&text={quote(mensagem)}'
             webbrowser.open(link_mensagem)
-            sleep(7)
+            sleep(10)
             seta = pyautogui.locateCenterOnScreen('enter.png')
-            sleep(4)
+            sleep(10)
             pyautogui.click(seta[0], seta[1])
-            sleep(4)
-            pyautogui.hotkey('ctrl', 'w')
-            sleep(4)
+            sleep(10)
         except:
             print(f'Não foi possível enviar a mensagem para {nome_completo}')
             pagina_erros.append([nome_completo, telefone, celula, email, escala])
