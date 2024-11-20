@@ -34,9 +34,9 @@ for linha in pagina.iter_rows(min_row=2):
     celula = linha[2].value
     email = linha[3].value
     escala = linha[4].value
-    mensagem = f'Olá, {nome}! Tudo bem?\nVi que você está escalado(a) no Salt pra servir nesse sábado, contamos com você.\nVocê pode confirmar pra mim se vai conseguir servir?\nÉ só responder nesse link aqui: https://forms.gle/mmXMidE7GbcpgM2n6'
+    mensagem = f'Olá, {nome}! Tudo bem?\nVi que você está escalado(a) no Salt pra servir nesse sábado, contamos com você.\nVocê pode confirmar pra gente se vai conseguir ou não servir?\nÉ só responder nesse link aqui: https://forms.gle/mmXMidE7GbcpgM2n6'
 
-    if escala == '':
+    if escala == '1':
         try:
             # Criar link de mensagem no WhatsApp
             link_mensagem = f'https://web.whatsapp.com/send?phone={telefone}&text={quote(mensagem)}'
