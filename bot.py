@@ -36,7 +36,7 @@ for linha in pagina.iter_rows(min_row=2):
     escala = linha[4].value
     mensagem = f'Olá, {nome}! Tudo bem?\nVi que você está escalado(a) no Salt pra servir nesse sábado, contamos com você.\nVocê pode confirmar pra gente se vai conseguir ou não servir?\nÉ só responder nesse link aqui: https://forms.gle/mmXMidE7GbcpgM2n6'
 
-    if escala == '1':
+    if escala == '':
         try:
             # Criar link de mensagem no WhatsApp
             link_mensagem = f'https://web.whatsapp.com/send?phone={telefone}&text={quote(mensagem)}'
