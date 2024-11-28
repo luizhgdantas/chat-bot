@@ -2,3 +2,16 @@ erros_dias.xlsx
 erros.xlsx
 servos.xlsx
 __pycache__/
+# Ignorar pastas do PyInstaller
+build/
+dist/
+*.spec
+
+# Ignorar arquivos de ambiente Python
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignorar arquivos do sistema (Mac/Windows)
+.DS_Store
+Thumbs.db
