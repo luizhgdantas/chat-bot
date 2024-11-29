@@ -108,7 +108,7 @@ def enviar_thread():
 # Janela principal
 janela = ctk.CTk()
 janela.title("Automação de Mensagens WhatsApp")
-janela.geometry("500x350")
+janela.geometry("600x350")
 
 # Componentes da interface
 lbl_titulo = ctk.CTkLabel(janela, text="Automação WhatsApp", font=ctk.CTkFont(size=20, weight="bold"))
