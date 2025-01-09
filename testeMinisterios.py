@@ -18,9 +18,10 @@ ctk.set_default_color_theme("blue")  # Tema azul
 # Variáveis globais
 caminho_planilha = ""
 escala_input = ""
+ministerio_selecionado = ""
 
 # Função para enviar mensagens usando Selenium
-def iniciar_envio(planilha_path, escala_criterio):
+def iniciar_envio(planilha_path, escala_criterio, ministerio):
     try:
         # Inicializa o ChromeDriver
         service = Service(ChromeDriverManager().install())
@@ -47,7 +48,8 @@ def iniciar_envio(planilha_path, escala_criterio):
             celula = linha[2].value
             email = linha[3].value
             escala = linha[4].value
-            mensagem = f'Olá, {nome}! Tudo bem? Vi que você está escalado(a) para servir no Salt neste sábado. Contamos com você. Confirme pelo link: https://forms.gle/mmXMidE7GbcpgM2n6'
+            mensagem = (f'Olá, {nome}! Tudo bem? Vi que você está escalado(a) para servir no "{ministerio}" ' 
+                        f'neste sábado. Contamos com você. Confirme pelo link: https://forms.gle/mmXMidE7GbcpgM2n6')
 
             # Verifica se o critério da escala é atendido
             if str(escala) == escala_criterio:
@@ -69,7 +71,7 @@ def iniciar_envio(planilha_path, escala_criterio):
 
             # Atualizar status na interface
             lbl_status.configure(text=f"Enviando mensagem {i}/{len(list(pagina.iter_rows(min_row=2)))}...")
-            janela.update_idletasks()
+            janela_principal.update_idletasks()
 
         # Salvar erros, se houver
         workbook_erros.save('erros.xlsx')
@@ -100,35 +102,57 @@ def enviar_thread():
 
     lbl_status.configure(text="Iniciando envio... Por favor, aguarde.")
     btn_iniciar.configure(state="disabled")  # Desabilitar botão durante o envio
-    resultado = iniciar_envio(caminho_planilha, escala_input)
+    resultado = iniciar_envio(caminho_planilha, escala_input, ministerio_selecionado)
     messagebox.showinfo("Resultado", resultado)
     lbl_status.configure(text=resultado)
     btn_iniciar.configure(state="normal")  # Reabilitar botão
 
-# Janela principal
-janela = ctk.CTk()
-janela.title("Convocação servos")
-janela.geometry("600x350")
+# Função para iniciar a janela principal
+def abrir_janela_principal(ministerio):
+    global ministerio_selecionado
+    ministerio_selecionado = ministerio
+    janela_selecao.destroy()
 
-# Componentes da interface
-lbl_titulo = ctk.CTkLabel(janela, text="Convocação servos", font=ctk.CTkFont(size=20, weight="bold"))
-lbl_titulo.pack(pady=10)
+    global janela_principal
+    janela_principal = ctk.CTk()
+    janela_principal.title("Convocação Servos")
+    janela_principal.geometry("600x400")
 
-btn_selecionar = ctk.CTkButton(janela, text="Selecionar Planilha", command=selecionar_planilha)
-btn_selecionar.pack(pady=10)
+    # Componentes da interface principal
+    lbl_titulo = ctk.CTkLabel(janela_principal, text=f"Convocação - {ministerio}", font=ctk.CTkFont(size=20, weight="bold"))
+    lbl_titulo.pack(pady=10)
 
-lbl_escala = ctk.CTkLabel(janela, text="Informe o número/critério da escala:")
-lbl_escala.pack(pady=5)
+    btn_selecionar = ctk.CTkButton(janela_principal, text="Selecionar Planilha", command=selecionar_planilha)
+    btn_selecionar.pack(pady=10)
 
-entrada_escala = ctk.CTkEntry(janela)
-entrada_escala.pack(pady=5)
+    lbl_escala = ctk.CTkLabel(janela_principal, text="Informe o número/critério da escala:")
+    lbl_escala.pack(pady=5)
 
-lbl_status = ctk.CTkLabel(janela, text="Nenhuma planilha selecionada", wraplength=400)
-lbl_status.pack(pady=10)
+    global entrada_escala
+    entrada_escala = ctk.CTkEntry(janela_principal)
+    entrada_escala.pack(pady=5)
 
-# Defina o botão 'Iniciar Envio' após a definição de todos os componentes
-btn_iniciar = ctk.CTkButton(janela, text="Iniciar Envio", command=lambda: threading.Thread(target=enviar_thread).start())
-btn_iniciar.pack(pady=20)
+    global lbl_status
+    lbl_status = ctk.CTkLabel(janela_principal, text="Nenhuma planilha selecionada", wraplength=400)
+    lbl_status.pack(pady=10)
 
-# Iniciar a janela
-janela.mainloop()
+    global btn_iniciar
+    btn_iniciar = ctk.CTkButton(janela_principal, text="Iniciar Envio", command=lambda: threading.Thread(target=enviar_thread).start())
+    btn_iniciar.pack(pady=20)
+
+    janela_principal.mainloop()
+
+# Janela inicial para selecionar ministério
+janela_selecao = ctk.CTk()
+janela_selecao.title("Seleção de Ministério")
+janela_selecao.geometry("600x400")
+
+lbl_escolha = ctk.CTkLabel(janela_selecao, text="Escolha o Ministério:", font=ctk.CTkFont(size=16, weight="bold"))
+lbl_escolha.pack(pady=20)
+
+ministerios = ["Salt operacional", "Ordem de culto", "Louvor", "Técnica", "Join"]
+for ministerio in ministerios:
+    btn_ministerio = ctk.CTkButton(janela_selecao, text=ministerio, command=lambda m=ministerio: abrir_janela_principal(m))
+    btn_ministerio.pack(pady=10)
+
+janela_selecao.mainloop()

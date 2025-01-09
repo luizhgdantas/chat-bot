@@ -37,7 +37,7 @@ def iniciar_envio(planilha_path, escala_criterio):
 
         # Acessar o WhatsApp Web
         driver.get('https://web.whatsapp.com/')
-        sleep(30)  # Tempo para escanear o QR code
+        sleep(60)  # Tempo para escanear o QR code
 
         # Percorrer os contatos na planilha
         for i, linha in enumerate(pagina.iter_rows(min_row=2), start=1):
@@ -47,7 +47,7 @@ def iniciar_envio(planilha_path, escala_criterio):
             celula = linha[2].value
             email = linha[3].value
             escala = linha[4].value
-            mensagem = f'Olá, {nome}! Tudo bem? Vi que você está escalado(a) para servir no Salt neste sábado. Contamos com você. Confirme pelo link: https://forms.gle/mmXMidE7GbcpgM2n6'
+            mensagem = f'Olá, {nome}! Tudo bem? \nVi que você está escalado(a) para servir no Salt nesta sexta. Contamos com você. \n\nConfirme pelo link: https://forms.gle/juFJFbeE5i38YPLM8'
 
             # Verifica se o critério da escala é atendido
             if str(escala) == escala_criterio:
@@ -61,7 +61,7 @@ def iniciar_envio(planilha_path, escala_criterio):
                         EC.element_to_be_clickable((By.XPATH, '//*[@id="main"]/footer/div[1]/div/span/div/div[2]/div[2]/button/span'))
                     )
                     send_button.click()
-                    sleep(2)  # Pausa para garantir envio
+                    sleep(3)  # Pausa para garantir envio
 
                 except Exception as e:
                     print(f"Erro ao enviar para {nome_completo}: {e}")
