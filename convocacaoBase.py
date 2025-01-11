@@ -56,12 +56,17 @@ def iniciar_envio(planilha_path, escala_criterio):
                     link_mensagem = f'https://web.whatsapp.com/send?phone={telefone}&text={quote(mensagem)}'
                     driver.get(link_mensagem)
 
+                    # Aguardar o carregamento completo do chat
+                    WebDriverWait(driver, 60).until(
+                        EC.presence_of_element_located((By.XPATH, '//div[@title="Digite uma mensagem"]'))
+                    )
+
                     # Aguardar botão de enviar
-                    send_button = WebDriverWait(driver, 20).until(
+                    send_button = WebDriverWait(driver, 60).until(
                         EC.element_to_be_clickable((By.XPATH, '//*[@id="main"]/footer/div[1]/div/span/div/div[2]/div[2]/button/span'))
                     )
                     send_button.click()
-                    sleep(3)  # Pausa para garantir envio
+                    sleep(5)  # Pausa para garantir envio
 
                 except Exception as e:
                     print(f"Erro ao enviar para {nome_completo}: {e}")
